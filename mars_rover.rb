@@ -1,9 +1,3 @@
-#see comments
-
-grid = gets.chomp
-grid.chars
-max_x = grid[0].to_i
-max_y = grid[2].to_i
 
 class Rover
 
@@ -15,49 +9,77 @@ class Rover
   end
 
   def starter
-    @start_pos = gets.chomp
-    @start_pos.chars
+    @start_pos = gets
+    @start_pos = @start_pos.scan(/\w/)
     @x_coor = @start_pos[0].to_i
-    @y_coor = @start_pos[2].to_i
-    @start_pos[4] = @direc
+    @y_coor = @start_pos[1].to_i
+    @direc = @start_pos[2]
   end
 
   def move
-    @move_string = gets.chomp
-    @move_string.chars
-    @move_string.each do |move|
-      case move == "L"
+
+    def turn_r
+     case
         when @direc == "N"
           @direc = "W"
+          return
         when @direc == "W"
           @direc = "S"
+          return
         when @direc == "S"
           @direc = "E"
+          return
         when @direc == "E"
           @direc = "N"
+          return
       end
-      case move == "R"
+    end
+
+    def turn_l
+      case
         when @direc == "N"
           @direc = "E"
+          return
         when @direc == "E"
           @direc = "S"
+          return
         when @direc == "S"
           @direc = "W"
+          return
         when @direc == "W"
           @direc = "N"
+          return
       end
-      case move == "M"
+    end
+
+    def move_straight
+      case
         when @direc == "E"
           @x_coor += 1
+          return
         when @direc == "W"
           @x_coor -= 1
+          return
         when @direc == "N"
           @y_coor += 1
+          return
         when @direc == "S"
           @y_coor -= 1
+          return
       end
-      case move == " "
-        nil
+    end
+
+    @move_string = gets
+    @move_string = @move_string.scan(/\w/)
+    @move_string.each do |move|
+      if move == "L"
+        turn_r
+      elsif move == "R"
+        turn_l
+      elsif move == "M"
+        move_straight
+      else
+        puts "invalid instructions"
       end
     end
     puts "#{@x_coor} #{@y_coor} #{@direc}"
@@ -65,8 +87,15 @@ class Rover
 
 end
 
-#need a method to find out whether or not first instance, because all subsequent instances need to output their starting coordinates
+  grid = gets
+  max_x = grid.scan(/\w/)[0].to_i
+  max_y = grid.scan(/\w/)[1].to_i
 
-#what are the 5 gets?
+josh = Rover.new ("josh")
 
-#my .chars don't seem to be working
+josh.starter
+josh.move
+
+dave = Rover.new ("dave")
+dave.starter
+dave.move
